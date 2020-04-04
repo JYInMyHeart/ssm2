@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tycoding.mapper.UserMapper">
+  <sql id="Base_Column_List">
+    user_id,
+      user_name,
+      user_sex,
+      user_age,
+      user_password,
+      user_role
+  </sql>
+  <resultMap id="UserBaseMap" type="cn.tycoding.pojo.UserPojo">
+    <id property="id" column="user_id" jdbcType="INTEGER"/>
+    <result property="name" column="user_name" jdbcType="VARCHAR"/>
+    <result property="password" column="user_password" jdbcType="VARCHAR"/>
+    <result property="sex" column="user_sex" jdbcType="INTEGER"/>
+    <result property="age" column="user_age" jdbcType="INTEGER"/>
+    <result property="role" column="user_role" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <!-- 登录的功能 -->
+  <select id="login" resultType="cn.tycoding.pojo.UserPojo"
+    parameterType="cn.tycoding.pojo.UserPojo">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where user_name = #{userPojo.name}
+  </select>
+
+  <!-- 注册的功能 -->
+  <insert id="register" parameterType="cn.tycoding.pojo.UserPojo">
+    insert into user(user_name,
+                     user_sex,
+                     user_age,
+                     user_password,
+                     user_role)
+    values (#{name},
+            #{sex},
+            #{age},
+            #{password},
+            #{role})
+  </insert>
+
+  <!-- 根据用户名查询 -->
+  <select id="selectUser" parameterType="cn.tycoding.pojo.UserPojo"
+    resultType="cn.tycoding.pojo.UserPojo">
+    select
+    <include refid="Base_Column_List"/>
+    from user where 1= 1
+    <if test="name != null">
+      and user_name = #{name}
+    </if>
+    <if test="name != null">
+      and user_sex = #{sex}
+    </if>
+    <if test="name != null">
+      and user_age = #{age}
+    </if>
+    <if test="name != null">
+      and user_role = #{role}
+    </if>
+    <if test="name != null">
+      and user_id = #{id}
+    </if>
+  </select>
+</mapper>
